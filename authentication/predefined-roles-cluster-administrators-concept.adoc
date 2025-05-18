@@ -1,0 +1,146 @@
+---
+permalink: authentication/predefined-roles-cluster-administrators-concept.html
+sidebar: sidebar
+keywords: predefined roles, cluster administrators
+summary: "The predefined roles for cluster administrators should meet most of your needs. You can create custom roles as necessary. By default, a cluster administrator is assigned the predefined admin role."
+---
+= Predefined roles for ONTAP cluster administrators
+:icons: font
+:imagesdir: ../media/
+
+[.lead]
+The predefined roles for cluster administrators should meet most of your needs. You can create custom roles as necessary. By default, a cluster administrator is assigned the predefined `admin` role.
+
+The following table lists the predefined roles for cluster administrators:
+
+|===
+
+h| This role... h| Has this level of access... h| To the following commands or command directories
+
+a|
+admin
+a|
+all
+a|
+All command directories (`DEFAULT`)
+
+.3+a|
+admin-no-fsa (available beginning with ONTAP 9.12.1)
+a| Read/Write
+a| 
+* All command directories (`DEFAULT`)
+* `security login rest-role`
+* `security login role`
+a| Read only
+a| 
+* `security login rest-role create`
+* `security login rest-role delete`
+* `security login rest-role modify`
+* `security login rest-role show`
+* `security login role create`
+* `security login role create`
+* `security login role delete`
+* `security login role modify`
+* `security login role show`
+* `volume activity-tracking`
+* `volume analytics`
+a| None
+a| `volume file show-disk-usage`
+
+.2+a|
+autosupport
+a|
+all
+a|
+
+* `set`
+* `system node autosupport`
+
+a|
+none
+a|
+All other command directories (`DEFAULT`)
+
+.3+a|
+backup
+a|
+all
+a|
+`vserver services ndmp`
+
+a|
+readonly
+a|
+`volume`
+
+a|
+none
+a|
+All other command directories (`DEFAULT`)
+
+.3+a|
+readonly
+a|
+all
+a|
+
+* `security login password`
++
+For managing own user account local password and key information only
+* `set`
+
+a|
+* Beginning with ONTAP 9.8, readonly
+* Prior to ONTAP 9.8, none
+a|
+`security`
+
+a|
+readonly
+a|
+All other command directories (`DEFAULT`)
+
+.3+a|
+snaplock
+
+a| all
+a| 
+* `set`
+* `volume create`
+* `volume modify`
+* `volume move`
+* `volume show`
+
+a| none
+a| 
+* `volume move governor`
+* `volume move recommend`
+
+a| none
+a| All other command directories (`DEFAULT`)
+
+
+a|
+none
+a|
+none
+a|
+All command directories (`DEFAULT`)
+|===
+
+[NOTE]
+The `autosupport` role is assigned to the predefined `autosupport` account, which is used by AutoSupport OnDemand. ONTAP prevents you from modifying or deleting the `autosupport` account. ONTAP also prevents you from assigning the `autosupport` role to other user accounts.
+
+.Related information
+* link:https://docs.netapp.com/us-en/ontap-cli/search.html?q=security+login[security login^]
+* link:https://docs.netapp.com/us-en/ontap-cli/set.html[set^]
+* link:https://docs.netapp.com/us-en/ontap-cli/search.html?q=volume[volume^]
+* link:https://docs.netapp.com/us-en/ontap-cli/search.html?q=vserver+services+ndmp[vserver services ndmp^]
+
+
+// 2025 Apr 14, ONTAPDOC-2960
+// 2025 Mar 25 ONTAPDOC-1203
+// 2025 Jan 22, ONTAPDOC-1070
+// 2024-June-13, issue# 1360
+// 7 February 2022, ONTAPDOC-875
+//2022 oct 21, issue 682

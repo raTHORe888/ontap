@@ -1,0 +1,53 @@
+---
+permalink: authentication/mfa-overview.html
+sidebar: sidebar
+keywords: enable, ssh, multifactor authentication, mfa, hardware authentication device, public key, totp, time-based, one-time, password
+summary: "Multifactor authentication (MFA) allows you to enhance security by requiring users to provide two authentication methods to log in to an admin or data SVM."
+---
+= Learn about ONTAP multifactor authentication
+:icons: font
+:imagesdir: ../media/
+
+[.lead]
+Multifactor authentication (MFA) allows you to enhance security by requiring users to provide two authentication methods to log in to an admin or data storage VM. 
+
+Depending upon your version of ONTAP, you can use a combination of an SSH public key, a user password, and a time-based one-time password (TOTP) for multifactor authentication. When you enable and configure Cisco Duo (ONTAP 9.14.1 and later), it serves as an additional authentication method, supplementing the existing methods for all users.
+
+[cols="3", options="header"]
+|===
+
+|Available beginning with...
+|First authentication method
+|Second authentication method
+
+.4+|ONTAP 9.14.1
+|SSH public key
+|TOTP
+
+|User Password
+|TOTP
+
+|SSH public key
+|Cisco Duo
+
+|User password
+|Cisco Duo
+
+.2+|ONTAP 9.13.1
+|SSH public key
+|TOTP
+
+|User password
+|TOTP
+
+|ONTAP 9.3
+|SSH public key
+|User password
+|===
+
+If MFA is configured, the cluster administrator must first enable the local user account, then the account must be configured by the local user.
+
+image:workflow-mfa-totp-ssh.png[Workflow of configuring MFA. This shows if MFA is configured the cluster administrator must first enable the local user account then the account must be configured by the local user.]
+
+
+// 2023 May 02, Jira 912

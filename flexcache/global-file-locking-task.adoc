@@ -1,0 +1,59 @@
+---
+permalink: flexcache/global-file-locking-task.html
+sidebar: sidebar
+keywords: global file locking, flexcache, relationship
+summary: "You can enable global file locking on FlexCache volumes if you want to privilege consistency over availability."
+---
+= Enable global file locking on ONTAP FlexCache volumes
+:icons: font
+:imagesdir: ../media/
+
+[.lead]
+Beginning with ONTAP 9.10.1, global file locking can be applied to prevent reads across all related cached files.
+
+With global file locking enabled, modifications to the origin volume are suspended until all FlexCache volumes are online. You should only enable global file locking when you have control over the reliability of the connections between cache and origin due to suspension and possible timeouts of modifications when FlexCache volumes are offline.
+
+.Before you begin 
+
+* Global file locking requires the clusters containing the origin and all associated caches to be running ONTAP 9.9.1 or later. Global file locking can be enabled on new or existing FlexCache volumes. The command can be run on one volume and applies to all associated FlexCache volumes.
+* You must be in the advanced privilege level to enable global file locking.
+* If you revert to a version of ONTAP earlier than 9.9.1, global file locking must first be disabled on the origin and associated caches. To disable, from the origin volume, run: `volume flexcache prepare-to-downgrade -disable-feature-set 9.10.0`
+* The process to enable global file locking depends on whether the origin has existing caches:
+** <<enable-gfl-new>>
+** <<enable-gfl-existing>>
+
+[[enable-gfl-new]]
+== Enable global file locking on new FlexCache volumes
+
+.Steps
+
+. Create the FlexCache volume with `-is-global-file-locking` set to true:
++
+`volume flexcache create volume _volume_name_ -is-global-file-locking-enabled true`
++
+[NOTE]
+The default value of `-is-global-file-locking` is "`false`". When any subsequent `volume flexcache create` commands are run on a volume, they must be passed with `-is-global-file-locking enabled` set to "`true`".
+
+[[enable-gfl-existing]]
+== Enable global file locking on existing FlexCache volumes
+
+.Steps
+
+. Global file locking must be set from the origin volume.
+. The origin cannot have any other existing relationships (for example, SnapMirror). Any existing relationships must be dissociated. All caches and volumes must be connected at the time of running the command. To check the connection status, run:
++
+`volume flexcache connection-status show`
++
+The status for all the listed volumes should display as `connected.` For more information, see link:view-connection-status-origin-task.html[View the status of a FlexCache relationship] or link:synchronize-properties-origin-volume-task.html[Synchronize properties of a FlexCache volume from an origin].
+. Enable global file locking on the caches:
++
+`volume flexcache origin config show/modify -volume _volume_name_ -is-global-file-locking-enabled true`
+
+.Related information
+* link:https://docs.netapp.com/us-en/ontap-cli/[ONTAP command reference^]
+
+// 2-APR-2025 ONTAPDOC-2919
+// 2025 Mar 03, ONTAPDOC-2758
+// 5 jan 2024, ONTAPDOC-1556
+// 2021-29-10, IE-426
+// BURT 1449057, 24 JAN 2022

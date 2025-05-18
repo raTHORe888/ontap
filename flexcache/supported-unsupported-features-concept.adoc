@@ -1,0 +1,432 @@
+---
+permalink: flexcache/supported-unsupported-features-concept.html
+sidebar: sidebar
+keywords: supported, unsupported, features, flexcache, volumes
+summary: "The supported features and protocols for FlexCache origin volumes and the FlexCache volumes vary."
+---
+= Supported and unsupported features for ONTAP FlexCache volumes
+:icons: font
+:imagesdir: ../media/
+
+[.lead]
+Beginning with ONTAP 9.5, you can configure FlexCache volumes.  FlexVol volumes are supported as origin volumes and FlexGroup volumes are supported as FlexCache volumes. Beginning with ONTAP 9.7 both FlexVol volumes and FlexGroup volumes are supported as origin volumes. The supported features and protocols for the origin volume and the FlexCache volume vary. 
+
+[NOTE]
+Cache volumes and origin volumes can interoperate as long as both are running on a supported version of ONTAP. Keep in mind that features are supported only when both the cache and the origin are running at least the ONTAP version where support was introduced or a later ONTAP version.
+
+== ONTAP version support between FlexCache volumes and origin volumes
+
+The recommended ONTAP version supported between origin volume and the cache volume is no more than four versions earlier or four versions later.  For example, if the cache is using ONTAP 9.14.1, the earliest version the origin can be using is ONTAP 9.10.1.
+
+== Supported protocols
+
+|===
+
+h| Protocol h| Supported at the origin volume? h| Supported at the FlexCache volume?
+
+
+a|
+NFSv3
+a|
+Yes
+a|
+Yes
+
+a|
+NFSv4
+a|
+Yes
+
+To access cache volumes using NFSv4.x protocol, both the origin and cache clusters must be using ONTAP 9.10.1 or later. The origin cluster and FlexCache cluster can have different ONTAP versions, but both should be ONTAP 9.10.1 and later versions, for example, the origin can have ONTAP 9.10.1, and the cache can have ONTAP  9.11.1.
+a|
+Yes
+
+Supported beginning with ONTAP 9.10.1. 
+
+To access cache volumes using NFSv4.x protocol, both the origin and cache clusters must be using ONTAP 9.10.1 or later. The origin cluster and FlexCache cluster can have different ONTAP versions, but both should be ONTAP 9.10.1 and later versions, for example, the origin can have ONTAP 9.10.1, and the cache can have ONTAP  9.11.1.
+
+a|
+NFSv4.2
+a|
+Yes
+a|
+No
+
+a|
+SMB
+a|
+Yes
+a|
+Yes
+
+Supported beginning with ONTAP 9.8.
+|===
+
+
+== Supported features
+
+|===
+
+h| Feature h| Supported at the origin volume? h| Supported at the FlexCache volume?
+
+a|
+Autonomous ransomware protection
+a|
+Yes
+
+Supported for FlexVol origin volumes beginning with ONTAP 9.10.1, and supported for FlexGroup origin volumes beginning with ONTAP 9.13.1. See link:../anti-ransomware/use-cases-restrictions-concept.html#unsupported-configurations[Autonomous Ransomware Protection use cases and considerations].
+
+a|
+No
+a|
+Antivirus
+a|
+Yes
+
+Supported beginning with ONTAP 9.7.
+
+a|
+Not applicable
+
+If you configure antivirus scanning at the origin, it is not required on the cache. The origin antivirus scanning detects files infected with viruses before writes are committed, regardless of the write source. For more information about using antivirus scanning with FlexCache, see the https://www.netapp.com/media/7336-tr4743.pdf[FlexCache with ONTAP technical report^].
+
+a|
+Auditing
+a|
+Yes
+
+Supported beginning with ONTAP 9.7.
+You can audit NFS file access events in FlexCache relationships using native ONTAP auditing.
+For more information, see xref:audit-flexcache-volumes-concept.adoc[Considerations for auditing FlexCache volumes]
+
+a|
+Yes
+
+Supported beginning with ONTAP 9.7.
+You can audit NFS file access events in FlexCache relationships using native ONTAP auditing.
+For more information, see xref:audit-flexcache-volumes-concept.adoc[Considerations for auditing FlexCache volumes]
+
+a|
+Cloud Volumes ONTAP
+a|
+Yes
+
+Supported beginning with ONTAP 9.6
+
+a|
+Yes
+
+Supported beginning with ONTAP 9.6
+
+a|
+Compaction
+a|
+Yes
+
+Supported beginning with ONTAP 9.6
+
+a|
+Yes
+
+Supported beginning with ONTAP 9.7
+
+a|
+Compression
+a|
+Yes
+
+Supported beginning with ONTAP 9.6
+
+a|
+Yes
+
+Supported beginning with ONTAP 9.6
+
+a|
+Deduplication
+a|
+Yes
+a|
+Yes
+
+Inline deduplication is supported on FlexCache volumes beginning with ONTAP 9.6. Cross-volume deduplication is supported on FlexCache volumes beginning with ONTAP 9.7.
+
+a|
+FabricPool
+a|
+Yes
+a|
+Yes
+
+Supported beginning with ONTAP 9.7
+
+a|
+FlexCache DR
+a|
+Yes
+a|
+Yes
+
+Supported beginning with ONTAP 9.9.1, with NFSv3 protocol, only. FlexCache volumes must be in separate SVMs or in separate clusters.
+
+a|
+FlexGroup volume
+a|
+Yes
+
+Supported beginning with ONTAP 9.7
+
+a|
+Yes
+a|
+FlexVol volume
+a|
+Yes
+a|
+No
+a|
+FPolicy
+a|
+Yes
+
+Supported beginning with ONTAP 9.7
+
+a|
+Yes
+
+Supported for NFS beginning with ONTAP 9.7.
+Supported for SMB beginning with ONTAP 9.14.1.
+
+a|
+MetroCluster configuration
+a|
+Yes
+
+Supported beginning with ONTAP 9.7
+
+a|
+Yes
+
+Supported beginning with ONTAP 9.7
+
+a|
+Microsoft Offloaded Data Transfer (ODX)
+a|
+Yes
+a|
+No
+
+a|
+NetApp Aggregate Encryption (NAE)
+a|
+Yes
+
+Supported beginning with ONTAP 9.6
+
+a|
+Yes
+
+Supported beginning with ONTAP 9.6
+
+a|
+NetApp Volume Encryption (NVE)
+a|
+Yes
+
+Supported beginning with ONTAP 9.6
+
+a|
+Yes
+
+Supported beginning with ONTAP 9.6
+
+a|
+ONTAP S3 NAS bucket
+a|
+Yes
+
+Supported beginning with ONTAP 9.12.1
+a|
+No
+
+
+
+a|
+QoS
+a|
+Yes
+a|
+Yes
+
+NOTE: File-level QoS is not supported for FlexCache volumes.
+
+a|
+Qtrees
+a|
+Yes
+
+Beginning with ONTAP 9.6, you can create and modify qtrees. Qtrees created on the source can be accessed on the cache.
+
+
+a|
+No
+
+a|
+Quotas
+a|
+Yes
+
+Beginning with ONTAP 9.6, quota enforcement on FlexCache origin volumes is supported for users, groups, and qtrees.
+a|
+No
+
+With FlexCache writearound mode (the default mode), writes on the cache are forwarded to the origin volume. Quotas are enforced at the origin.
+
+NOTE: Beginning with ONTAP 9.6, remote quota (rquota) is supported at FlexCache volumes.
+
+a|
+SMB Change Notify
+a|
+Yes
+a|
+Yes
+
+Beginning with ONTAP 9.14.1, SMB Change Notify is supported at the cache.
+
+a|
+SnapLock volumes
+a|
+No
+a|
+No
+
+a|
+SnapMirror asynchronous relationships*
+a|
+Yes
+a|
+No
+
+a|
+2+a| *FlexCache origins: 
+
+* You can have a FlexCache volume from an origin FlexVol
+
+* You can have a FlexCache volume from an origin FlexGroup
+
+* You can have a FlexCache volume from an origin primary volume in SnapMirror relationship.
+
+* Beginning with ONTAP 9.8, a SnapMirror secondary volume can be a FlexCache origin volume. The SnapMirror secondary volume must be idle with no active SnapMirror updates; otherwise, FlexCache creation fails.
+
+a|
+SnapMirror synchronous relationships
+a|
+No
+a|
+No
+
+a|
+SnapRestore
+a|
+Yes
+a|
+No
+
+a|
+Snapshots
+a|
+Yes
+a|
+No
+
+a|
+SVM DR configuration
+a|
+Yes
+
+Supported beginning withONTAP 9.5. The primary SVM of an SVM DR relationship can have the origin volume; however, if the SVM DR relationship is broken, the FlexCache relationship must be re-created with a new origin volume.
+
+a|
+No
+
+You can have FlexCache volumes in primary SVMs, but not in secondary SVMs. Any FlexCache volume in the primary SVM is not replicated as part of the SVM DR relationship.
+
+a|
+Storage-level Access Guard (SLAG)
+a|
+No
+a|
+No
+
+a|
+Thin provisioning
+a|
+Yes
+a|
+Yes
+
+Supported beginning with ONTAP 9.7
+
+a|
+Volume cloning
+a|
+Yes
+
+Cloning of an origin volume and the files in the origin volume is supported beginning with ONTAP 9.6.
+
+a|
+No
+
+a|
+Volume move
+a|
+Yes
+a|
+Yes (only for volume constituents)
+
+Moving volume constituents of a FlexCache volume is supported with ONTAP 9.6 and later.
+
+a|
+Volume rehost
+a|
+No
+a|
+No
+
+a|
+vStorage API for Array Integration (VAAI)
+a|
+Yes
+a|
+No
+|===
+
+[NOTE]
+In ONTAP 9 releases earlier than 9.5, origin FlexVol volumes can only serve data to FlexCache volumes created on systems running Data ONTAP 8.2.x operating in 7-Mode. Beginning with ONTAP 9.5, origin FlexVol volumes can also serve data to FlexCache volumes on ONTAP 9 systems. For information about migrating from 7-Mode FlexCache to ONTAP 9 FlexCache see link:https://www.netapp.com/pdf.html?item=/media/7336-tr4743pdf.pdf[NetApp Technical Report 4743: FlexCache in ONTAP^].
+
+
+// 2-APR-2025 ONTAPDOC-2919
+// 2025-Feb-12, issue# 1644
+// 2025 Jan 22, ONTAPDOC-1070
+// 2025-Jan-16, issue# 1600
+// 2024-Aug-30, ONTAPDOC-2346
+// 2024-Aug-1, Git issue# 1425
+// 2024-July-17, ONTAPDOC-2050
+// 2024-June-24, issue# 1316
+// 2024-June-5, issue# 1381
+//2024-10-4, ONTAPDOC-1886
+// 2023-Dec-12, issue# 1199
+// 2023 Dec 04, Jira 1432
+// 25 OCT 2023, ONTAPDOC-1347
+// 2023-Nov-14, issue# 1169 and 1171
+// 2023-Sept-27, issue# 1116
+// 2023-Aug-18, issue# 1055
+// 2023-july-26, issue #1029
+// 2023-July-17, issue #979
+// 2023-Mar-21, issue# 853
+// 2023-Jan-30, ONTAPDOC-841
+// 2022-03-22, ontap-issues-419
+// 2021-11-01, IE-426
+// BURT 1417323, 2021-11-15
+// 2022-03-10, BURT 1439146
+// 2022-5-23, issue 445 

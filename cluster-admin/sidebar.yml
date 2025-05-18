@@ -1,0 +1,54 @@
+section: cluster-admin
+title: Cluster administration
+url: /cluster-admin/index.html
+entries:
+ - title: Cluster management with System Manager
+   entries:
+     - title: Administration overview
+       url: /concept_administration_overview.html
+     - title: Use System Manager to access a Cluster
+       url: /system-admin/access-cluster-system-manager-browser-task.html
+     - title: Configure protocols
+       url: /software_setup/configure-protocols.html 
+     - title: Enable new features
+       url: /task_admin_enable_new_features.html
+     - title: Download a cluster configuration
+       url: /task_admin_download_cluster_config.html
+     - title: Assign tags to a cluster
+       url: /assign-tags-cluster-task.html
+     - title: View and submit support cases
+       url: /task_admin_view_submit_support_cases.html
+     - title: Manage maximum capacity limit of a storage VM 
+       url: /manage-max-cap-limit-svm-in-sm-task.html         
+     - title: Monitor cluster, tier, and SVM capacity
+       url: /task_admin_monitor_capacity_in_sm.html  
+     - title: View hardware configurations and determine problems
+       url: /task_admin_troubleshoot_hardware_problems.html
+     - title: Manage nodes
+       url: /manage-nodes-sm-task.html     
+       pdf-filename: Manage nodes with System Manager
+ - title: License management
+   entries:
+    - title: Overview
+      url: "/system-admin/manage-licenses-concept.html"
+    - title: Download NetApp License Files (NLFs)
+      url: "/system-admin/download-nlf-task.html"
+    - title: Install ONTAP licenses
+      url: "/system-admin/install-license-task.html"
+    - title: Manage ONTAP licenses
+      url: "/system-admin/manage-license-task.html"
+    - title: License types and licensed method
+      url: "/system-admin/license-types-licensed-method-concept.html"
+    - title: Commands for managing licenses
+      url: "/system-admin/commands-manage-feature-licenses-reference.html"
+ - section: system-admin
+ - section: disks-aggregates
+ - section: fabricpool
+ - section: svm-migrate
+ - section : high-availability
+ - title: REST API management with System Manager
+   entries:
+     - title: Rest log overview
+       url: /concept_rest_overview.html
+     - title: Access the REST API log
+       url: /task_rest_access_log.html

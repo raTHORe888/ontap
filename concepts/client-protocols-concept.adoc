@@ -1,0 +1,69 @@
+---
+permalink: concepts/client-protocols-concept.html
+sidebar: sidebar
+keywords: client protocols
+summary: "ONTAP supports all major industry-standard client protocols: NFS, SMB, FC, FCoE, iSCSI, NVMe, and S3."
+---
+= Client protocols
+:icons: font
+:imagesdir: ../media/
+
+[.lead]
+ONTAP supports all major industry-standard client protocols: NFS, SMB, FC, FCoE, iSCSI, NVMe, and S3.
+
+== NFS
+
+NFS is the traditional file access protocol for UNIX and LINUX systems. Clients can access files in ONTAP volumes using the following protocols.
+
+* NFSv3
+* NFSv4
+* NFSv4.2
+* NFSv4.1
+* pNFS
+
+You can control file access using UNIX-style permissions, NTFS-style permissions, or a mix of both.
+
+Clients can access the same files using both NFS and SMB protocols.
+
+== SMB
+
+SMB is the traditional file access protocol for Windows systems. Clients can access files in ONTAP volumes using the SMB 2.0, SMB 2.1, SMB 3.0, and SMB 3.1.1 protocols. Just like with NFS, a mix of permission styles are supported.
+
+SMB 1.0 is available but disabled by default in ONTAP 9.3 and later releases.
+
+== FC
+
+Fibre Channel is the original networked block protocol. Instead of files, a block protocol presents an entire virtual disk to a client. The traditional FC protocol uses a dedicated FC network with specialized FC switches, and requires the client computer to have FC network interfaces.
+
+A LUN represents the virtual disk, and one or more LUNs are stored in an ONTAP volume. The same LUN can be accessed through the FC, FCoE, and iSCSI protocols, but multiple clients can access the same LUN only if they are part of a cluster that prevents write collisions.
+
+== FCoE
+
+FCoE is basically the same protocol as FC, but uses a datacenter-grade Ethernet network in place of the traditional FC transport. The client still requires an FCoE-specific network interface.
+
+== iSCSI
+
+iSCSI is a block protocol that can run on standard Ethernet networks. Most client operating systems offer a software initiator that runs over a standard Ethernet port. iSCSI is a good choice when you need a block protocol for a particular application, but do not have dedicated FC networking available.
+
+== NVMe/FC and NVMe/TCP
+
+The newest block protocol, NVMe, is specifically designed to work with flash-based storage. It offers scalable sessions, a significant reduction in latency, and an increase in parallelism, making it well suited to low-latency and high-throughput applications such as in-memory databases and analytics.
+
+Unlike FC and iSCSI, NVMe does not use LUNs. Instead it uses namespaces, which are stored in an ONTAP volume. NVMe namespaces can be accessed only through the NVMe protocol.
+
+== S3
+
+Beginning with ONTAP 9.8, you can enable an ONTAP Simple Storage Service (S3) server in an ONTAP cluster, allowing you to serve data in object storage using S3 buckets.
+
+ONTAP supports two on-premises use case scenarios for serving S3 object storage:
+
+*	FabricPool tier to a bucket on local cluster (tier to a local bucket) or remote cluster (cloud tier).
+*	S3 client app access to a bucket on the local cluster or a remote cluster.
+
+[NOTE]
+====
+ONTAP S3 is appropriate if you want S3 capabilities on existing clusters without additional hardware and management. For deployments larger than 300TB, NetApp StorageGRID software continues to be the NetApp flagship solution for object storage. Learn about https://docs.netapp.com/us-en/storagegrid-family/[StorageGRID^].
+====
+
+// 2023 Sept 26, Jira 1393
+// 2022 May 27, ontap-issues-452

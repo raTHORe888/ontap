@@ -1,0 +1,33 @@
+---
+permalink: concepts/cloud-backup-support-traditional-backups-concept.html
+sidebar: sidebar
+keywords: cloud backup, support, traditional backups
+summary: "In addition to SnapMirror and SnapVault data protection relationships, which were disk-to-disk only for ONTAP 9.7 and earlier, there are now several backup solutions that offer a less expensive alternative for long-term data retention."
+---
+= Cloud backup and support for traditional backups
+:icons: font
+:imagesdir: ../media/
+
+[.lead]
+In addition to SnapMirror and SnapVault data protection relationships, which were disk-to-disk only for ONTAP 9.7 and earlier, there are now several backup solutions that offer a less expensive alternative for long-term data retention.
+
+Numerous third-party data protection applications offer traditional backup for ONTAP-managed data. Veeam, Veritas, and Commvault, among others, all offer integrated backup for ONTAP systems.
+
+Beginning with ONTAP 9.8, SnapMirror cloud provides asynchronous replication of snapshots from ONTAP instances to object storage endpoints. SnapMirror cloud replication requires a licensed application for orchestration and management of data protection workflows. SnapMirror cloud relationships are supported from ONTAP systems to select on-premises and public cloud object storage targets -- including AWS S3, Google Cloud Storage Platform, or Microsoft Azure Blob Storage -- which provides enhanced efficiency with vendor backup software. Contact your NetApp representative for a list of supported certified applications and object storage vendors.
+
+If you are interested in cloud-native data protection, BlueXP can be used to configure SnapMirror or SnapVault relationships between on-premises volumes and Cloud Volumes ONTAP instances in the public cloud.
+
+BlueXP also provides backups of Cloud Volumes ONTAP instances using a Software as a Service (SaaS) model. Users can back up their Cloud Volumes ONTAP instances to S3 and S3-compliant public cloud object storage using BlueXP backup and recovery.
+
+link:https://docs.netapp.com/us-en/bluexp-cloud-volumes-ontap/index.html[Cloud Volumes ONTAP documentation^]
+
+link:https://docs.netapp.com/us-en/bluexp-family/index.html[BlueXP documentation^]
+
+link:https://bluexp.netapp.com/[NetApp BlueXP^]
+
+// 1-9-25 GH-2187
+// 2024-Aug-30, ONTAPDOC-2346
+// 2023 DEC 15, ontap-issues-1184
+// 2022 nov 02, internal-issue 916
+// 07 DEC 2021, BURT 1430515
+// 24 Jan 2022, issue #334, #335

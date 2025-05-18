@@ -1,0 +1,49 @@
+---
+sidebar: sidebar
+permalink: authentication/oauth2-authorization.html
+keywords: scopes, self-contained scopes, active directory, ldap, rest role, local users, groups
+summary: "The ONTAP OAuth 2.0 implementation is designed to be flexible and robust, providing the features you need to secure your ONTAP environment. There are several mutually exclusive configuration options available. The authorization decisions are ultimately based on the ONTAP REST roles either contained in or derived from the OAuth 2.0 access tokens."
+---
+
+= Overview and options for ONTAP client authorization
+:hardbreaks:
+:nofooter:
+:icons: font
+:linkattrs:
+:imagesdir: ../media/
+
+[.lead]
+The ONTAP OAuth 2.0 implementation is designed to be flexible and robust, providing the features you need to secure your ONTAP environment. There are several mutually exclusive configuration options available. The authorization decisions are ultimately based on the ONTAP REST roles either contained in or derived from the OAuth 2.0 access tokens.
+
+[CAUTION]
+You can only use link:../authentication/overview-oauth2.html#selected-terminology[ONTAP REST roles] when configuring authorization for OAuth 2.0. The earlier ONTAP traditional roles are not supported.
+
+ONTAP applies the single most appropriate authorization option based on your configuration. See link:../authentication/oauth2-determine-access.html[How ONTAP determines access] for more about how ONTAP makes client access decisions.
+
+.OAuth 2.0 self-contained scopes
+
+These scopes contain one or more custom REST roles, each encapsulated within a single string in the access token. They are independent of the ONTAP role definitions. You need to configure the scope strings at your authorization server. See link:../authentication/oauth2-sc-scopes.html[Self-contained OAuth 2.0 scopes] for more information.
+
+.Local ONTAP REST roles
+
+A single named REST role, either builtin or custom, can be used. The scope syntax for a named role is *ontap-role-*<URL-encoded-ONTAP-role-name>. For example, if the ONTAP role is `admin` the scope string will be `ontap-role-admin`.
+
+.Users
+
+The username in the access token defined with access to the application "http" can be used. A user is tested in the following order based on the defined authentication method: password, domain (Active Directory), nsswitch (LDAP).
+
+.Groups
+
+The authorization servers can be configured to use ONTAP groups for authorization. If the local ONTAP definitions are examined but no access decision can be made, the Active Directory ("domain") or LDAP ("nsswitch") groups are used. Group information can be specified in one of two ways:
+
+* OAuth 2.0 scope string
++
+Supports confidential applications using the client credentials flow where there is no user with a group membership. The scope should be named *ontap-group-*<URL-encoded-ONTAP-group-name>. For example, if the group is "development" the scope string will be "ontap-group-development".
+
+* In the "group" claim
++
+This is intended for access tokens issued by ADFS using the resource owner (password grant) flow.
+
+See link:../authentication/oauth2-groups.html[Working with groups] for more information.
+
+// DMP - November 5 2024 - ONTAPDOC-2163

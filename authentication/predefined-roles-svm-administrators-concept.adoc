@@ -1,0 +1,94 @@
+---
+permalink: authentication/predefined-roles-svm-administrators-concept.html
+sidebar: sidebar
+keywords: predefined roles, cluster administrators
+summary: "The predefined roles for SVM administrators should meet most of your needs. You can create custom roles as necessary. By default, an SVM administrator is assigned the predefined vsadmin role."
+---
+= Predefined roles for ONTAP SVM administrators
+:icons: font
+:imagesdir: ../media/
+
+[.lead]
+The predefined roles for SVM administrators should meet most of your needs. You can create custom roles as necessary. By default, an SVM administrator is assigned the predefined `vsadmin` role.
+
+The following table lists the predefined roles for SVM administrators:
+
+|===
+
+h| Role name  h| Capabilities
+a|
+vsadmin
+a|
+
+* Managing own user account local password and key information
+* Managing volumes, except volume moves
+* Managing quotas, qtrees, snapshots, and files
+* Managing LUNs
+* Performing SnapLock operations, except privileged delete
+* Configuring protocols: NFS, SMB, iSCSI, FC, FCoE, NVMe/FC and NVMe/TCP
+* Configuring services: DNS, LDAP, and NIS
+* Monitoring jobs
+* Monitoring network connections and network interface
+* Monitoring the health of the SVM
+
+a|
+vsadmin-volume
+a|
+
+* Managing own user account local password and key information
+* Managing volumes, including volume moves
+* Managing quotas, qtrees, snapshots, and files
+* Managing LUNs
+* Configuring protocols: NFS, SMB, iSCSI, FC, FCoE, NVMe/FC and NVMe/TCP
+* Configuring services: DNS, LDAP, and NIS
+* Monitoring network interface
+* Monitoring the health of the SVM
+
+a|
+vsadmin-protocol
+a|
+
+* Managing own user account local password and key information
+* Configuring protocols: NFS, SMB, iSCSI, FC, FCoE, NVMe/FC and NVMe/TCP
+* Configuring services: DNS, LDAP, and NIS
+* Managing LUNs
+* Monitoring network interface
+* Monitoring the health of the SVM
+
+a|
+vsadmin-backup
+a|
+
+* Managing own user account local password and key information
+* Managing NDMP operations
+* Making a restored volume read/write
+* Managing SnapMirror relationships and snapshots
+* Viewing volumes and network information
+
+a|
+vsadmin-snaplock
+a|
+
+* Managing own user account local password and key information
+* Managing volumes, except volume moves
+* Managing quotas, qtrees, snapshots, and files
+* Performing SnapLock operations, including privileged delete
+* Configuring protocols: NFS and SMB
+* Configuring services: DNS, LDAP, and NIS
+* Monitoring jobs
+* Monitoring network connections and network interface
+
+a|
+vsadmin-readonly
+a|
+
+* Managing own user account local password and key information
+* Monitoring the health of the SVM
+* Monitoring network interface
+* Viewing volumes and LUNs
+* Viewing services and protocols
+
+|===
+
+// 2024 Feb 23, ONTAPDOC-1645
+// 4 FEB 2022, BURT 1451789 

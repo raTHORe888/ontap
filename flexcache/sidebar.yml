@@ -1,0 +1,29 @@
+section: flexcache
+title:  FlexCache volumes management
+entries:
+  - title: Overview
+    url: "/flexcache/index.html"
+  - title: FlexCache volumes supported protocols and features
+    url: "/flexcache/supported-unsupported-features-concept.html"
+  - title: Guidelines for sizing a FlexCache volume
+    url: "/flexcache/sizing-concept.html"     
+  - title: Create a FlexCache volume
+    url: "/flexcache/create-volume-task.html"
+  - section: flexcache-writeback
+  - title: Manage FlexCache volumes
+    entries:
+    - title: Learn about auditing FlexCache volumes
+      url: "/flexcache/audit-flexcache-volumes-concept.html"
+    - title: Synchronize properties of a FlexCache volume from an origin volume
+      url: "/flexcache/synchronize-properties-origin-volume-task.html"
+    - title: Update the configurations of a FlexCache relationship
+      url: "/flexcache/refresh-config-relationship-task.html"
+    - title: Enable file access time updates
+      url: "/flexcache/enable-file-access-time-updates-task.html"
+    - title: Enable global file locking
+      url: "/flexcache/global-file-locking-task.html"
+    - title: Prepopulate a FlexCache volume
+      url: "/flexcache/prepopulate-volume-task.html"
+    - title: Delete a FlexCache relationship
+      url: "/flexcache/delete-relationship-task.html"
+  - section: flexcache-hot-spot

@@ -1,0 +1,33 @@
+---
+permalink: concepts/manual-pages.html
+sidebar: sidebar
+keywords: CLI commands, manual pages, volume create, volume modify, volume show, volume move, snapmirror show, snapmirror create, vserver create, network interface show, storage disk show, volume delete, man pages, cli comparison tool, cli diff
+summary: "The ONTAP manual pages explain how to use ONTAP CLI commands. Find the command reference for the version of ONTAP you are using." 
+---
+= ONTAP command reference
+:icons: font
+:imagesdir: ../media/
+:hardbreaks:
+
+[.lead]
+For each major ONTAP release, the commonly available CLI commands (ONTAP manual pages, or man pages) are bundled into a link:https://docs.netapp.com/us-en/ontap-cli/[_command reference_^]. These command references explain how to use the CLI commands in each ONTAP release. Man pages are also available at the ONTAP command line with the `man` command. Learn more about `man` in the link:https://docs.netapp.com/us-en/ontap-cli/man.html[ONTAP command reference^].
+
+== Command references for limited support versions of ONTAP (PDF only)
+
+* link:https://library.netapp.com/ecm/ecm_download_file/ECMLP2843631[ONTAP 9.4^]
+
+== CLI comparison tool 
+
+You can learn about changes to the command-line interface (CLI) commands between ONTAP releases by using the link:https://mysupport.netapp.com/site/info/cli-comparison[CLI Comparison Tool^] on the NetApp Support Site.
+
+.Related information
+
+* xref:../system-admin/command-line-interface-concept.html[Use the ONTAP command line interface]
+* xref:../system-admin/methods-navigating-cli-command-directories-concept.html[Methods of navigating CLI command directories]
+
+// 2025 Mar 27, ontapdoc-2773
+// 2025 Mar 10, ONTAPDOC-2617
+// 2025 Mar 07, ONTAPDOC-2758
+// 2024 Dec 05, ONTAPDOC-2569
+// 2024 may 16, ontapdoc-1986
+//issue #342, 26 jan 2022
