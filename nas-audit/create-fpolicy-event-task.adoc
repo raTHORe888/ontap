@@ -1,0 +1,45 @@
+---
+permalink: nas-audit/create-fpolicy-event-task.html
+sidebar: sidebar
+keywords: creating, fpolicy event
+summary: "As part of creating an FPolicy policy configuration, you need to create an FPolicy event. You associate the event with the FPolicy policy when it is created. An event defines which protocol to monitor and which file access events to monitor and filter."
+---
+= Create the FPolicy event
+:icons: font
+:imagesdir: ../media/
+
+[.lead]
+As part of creating an FPolicy policy configuration, you need to create an FPolicy event. You associate the event with the FPolicy policy when it is created. An event defines which protocol to monitor and which file access events to monitor and filter.
+
+.Before you begin
+
+You should complete the FPolicy event link:../nas-audit/fpolicy-event-config-worksheet-reference.html[worksheet].
+
+== Create the FPolicy event
+
+. Create the FPolicy event by using the `vserver fpolicy policy event create` command.
++
+`vserver fpolicy policy event create -vserver vs1.example.com -event-name event1 -protocol cifs -file-operations open,close,read,write`
+
+. Verify the FPolicy event configuration by using the `vserver fpolicy policy event show` command.
++
+`vserver fpolicy policy event show -vserver vs1.example.com`
++
+----
+
+                  Event               File                    Is Volume
+Vserver           Name      Protocols Operations    Filters   Operation
+---------------   --------- --------- ------------- --------- ------------
+vs1.example.com   event1    cifs      open, close,  -         false
+                                      read, write
+----
+
+== Create the FPolicy access denied events
+
+Beginning with ONTAP 9.13.1, users can receive notifications for failed file operations due to lack of permissions. These notifications are valuable for security, ransomware protection, and governance.
+
+. Create the FPolicy event by using the `vserver fpolicy policy event create` command.
++
+`vserver fpolicy policy event create -vserver vs1.example.com -event-name event1 -protocol cifs -monitor-fileop-failure true -file-operations open`
+
+// 2023 Apr 11, Jira IDR-227

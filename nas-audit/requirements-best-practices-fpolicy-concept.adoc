@@ -1,0 +1,238 @@
+---
+permalink: nas-audit/requirements-best-practices-fpolicy-concept.html
+sidebar: sidebar
+keywords: requirements, considerations, best practices, configure, fpolicy
+summary: "Before you create and configure FPolicy configurations on your SVMs, you need to be aware of certain requirements, considerations, and best practices."
+---
+= Requirements, considerations, and best practices for configuring FPolicy
+:icons: font
+:imagesdir: ../media/
+
+// 15-April-2024 ONTAPDOC-1605
+// 20 OCT 2023, ONTAPDOC-1344 updates
+// 17 OCT 2023, ONTAPDOC-1344
+// 2023 May 23, ontap-issues-860
+// 2022 Dec 05, Jira ONTAPDOC-722
+// 2022 Oct 10, BURT 1495284 
+// 2022 Feb 04, BURT 1451789
+
+[.lead]
+Before you create and configure FPolicy configurations on your storage virtual machines (SVMs), you need to be aware of certain requirements, considerations, and best practices for configuring FPolicy.
+
+FPolicy features are configured either through the command line interface (CLI) or through REST APIs.
+
+== Requirements for setting up FPolicy
+
+Before you configure and enable FPolicy on your storage virtual machine (SVM), you need to be aware of certain requirements.
+
+* All nodes in the cluster must be running a version of ONTAP that supports FPolicy.
+* If you are not using the ONTAP native FPolicy engine, you must have external FPolicy servers (FPolicy servers) installed.
+* The FPolicy servers must be installed on a server accessible from the data LIFs of the SVM where FPolicy policies are enabled.
++
+NOTE: Beginning with ONTAP 9.8, ONTAP provides a client LIF service for outbound FPolicy connections with the addition of the `data-fpolicy-client` service. link:../networking/lifs_and_service_policies96.html[Learn more about LIFs and service policies].
+
+* The IP address of the FPolicy server must be configured as a primary or secondary server in the FPolicy policy external engine configuration.
+* If the FPolicy servers access data over a privileged data channel, the following additional requirements must be met:
+ ** SMB must be licensed on the cluster.
++
+Privileged data access is accomplished using SMB connections.
+
+ ** A user credential must be configured for accessing files over the privileged data channel.
+ ** The FPolicy server must run under the credentials configured in the FPolicy configuration.
+ ** All data LIFs used to communicate with the FPolicy servers must be configured to have `cifs` as one of the allowed protocols.
++
+This includes the LIFs used for passthrough-read connections.
+
+== Best practices and recommendations when setting up FPolicy
+When setting up FPolicy on storage virtual machines (SVMs), get familiar with the general configuration best practices and recommendations to ensure that your FPolicy configuration provides robust monitoring performance and results that meet your requirements.
+
+For specific guidelines related to performance, sizing, and configuration, work with your FPolicy partner application.
+
+=== Persistent stores 
+
+Beginning with ONTAP 9.14.1, FPolicy allows you to set up a persistent store to capture file access events for asynchronous non-mandatory policies in the SVM. Persistent stores can help decouple client I/O processing from FPolicy notification processing to reduce client latency. Synchronous (either mandatory or non-mandatory) and asynchronous mandatory configurations are not supported.
+
+* Before using the persistent store functionality, ensure your partner applications support this configuration.
+
+* You need one persistent store for each SVM where FPolicy is enabled.
+
+** Only one persistent store can be set up on each SVM. This single persistent store needs to be used for all FPolicy configurations on that SVM, even if the policies are from different partners.
+
+* ONTAP 9.15.1 or later:
+
+** The persistent store, its volume, and its volume configuration is handled automatically when you create the persistent store.
+
+* ONTAP 9.14.1:
+
+** The persistent store, its volume, and its volume configuration is handled manually.
+
+* Create the persistent store volume on the node with LIFs that expect maximum traffic to be monitored by FPolicy.
+
+** ONTAP 9.15.1 or later: Volumes are automatically created and configured during persistent store creation.
+
+** ONTAP 9.14.1: Cluster administrators need to create and configure a volume for the persistent store on each SVM where FPolicy is enabled.
+
+* If the notifications accumulated in the persistent store exceed the size of the volume provisioned, FPolicy starts dropping the incoming notification with appropriate EMS messages.
+
+** ONTAP 9.15.1 or later: In addition to the `size` parameter, the `autosize-mode` parameter can help the volume grow or shrink in response to the amount of used space.
+
+** ONTAP 9.14.1: The `size` parameter is configured during volume creation to provide a maximum limit.
+
+* Set the snapshot policy to `none` for the persistent store volume instead of `default`. This is to ensure that there is no accidental restore of the snapshot leading to loss of current events and to prevent possible duplicate event processing.
+
+** ONTAP 9.15.1 or later: The `snapshot-policy` parameter is automatically configured to none during persistent store creation.
+
+** ONTAP 9.14.1: The `snapshot-policy` parameter is configured to `none` during volume creation.
+
+* Make the persistent store volume inaccessible for external user protocol access (CIFS/NFS) to avoid accidental corruption or deletion of the persisted event records.
+
+** ONTAP 9.15.1 or later: ONTAP automatically blocks the volume from external user protocol access (CIFS/NFS) during persistent store creation.
+
+** ONTAP 9.14.1: After enabling FPolicy, unmount the volume in ONTAP to remove the junction path. This makes it inaccessible for external user protocol access (CIFS/NFS).
+
+For more information, refer to link:persistent-stores.html[FPolicy persistent stores] and link:create-persistent-stores.html[Create persistent stores].
+
+==== Persistent store failover and giveback
+
+The persistent store remains as it was when the last event was received, when there is an unexpected reboot, or FPolicy is disabled and enabled again. After a takeover operation, new events are stored and processed by the partner node. After a giveback operation, the persistent store resumes processing any unprocessed events that might remain from when the node takeover occurred. Live events would be given priority over unprocessed events.
+
+If the persistent store volume moves from one node to another in the same SVM, the notifications that are yet to be processed also move to the new node. You need to re-run the `fpolicy persistent-store create` command on either node after the volume is moved to ensure the pending notifications are delivered to the external server. Learn more about `fpolicy persistent-store create` in the link:https://docs.netapp.com/us-en/ontap-cli/vserver-fpolicy-persistent-store-create.html[ONTAP command reference^].
+
+=== Policy configuration 
+Configuration of the FPolicy external engine, events, and scope for SVMs can improve your overall experience and security.
+
+* Configuration of the FPolicy external engine for SVMs:
+
+** Providing additional security comes with a performance cost. Enabling Secure Sockets Layer (SSL) communication has a performance effect on accessing shares.  
+** The FPolicy external engine should be configured with more than one FPolicy server to provide resiliency and high availability of FPolicy server notification processing.
+
+* Configuration of FPolicy events for SVMs:
++
+Monitoring file operations influences your overall experience. For example, filtering unwanted file operations on the storage side improves your experience. NetApp recommends setting up the following configuration:
++
+** Monitoring the minimum types of file operations and enabling the maximum number of filters without breaking the use case. 
+** Using filters for getattr, read, write, open, and close operations. The SMB and NFS home directory environments have a high percentage of these operations. 
+
+* Configuration of FPolicy scope for SVMs: 
++
+Restrict the scope of the policies to the relevant storage objects, such as shares, volumes, and exports, instead of enabling them across the entire SVM. NetApp recommends checking the directory extensions. If the `is-file-extension-check-on-directories-enabled` parameter is set to `true`, directory objects are subjected to the same extension checks as regular files. 
+
+
+=== Network configuration 
+
+Network connectivity between the FPolicy server and the controller should be of low latency. NetApp recommends separating FPolicy traffic from client traffic by using a private network. 
+
+In addition, you should place external FPolicy servers (FPolicy servers) in close proximity to the cluster with high-bandwidth connectivity to provide minimal latency and high-bandwidth connectivity.
+
+NOTE: For a scenario in which the LIF for FPolicy traffic is configured on a different port to the LIF for client traffic, the FPolicy LIF might fail over to the other node because of a port failure. As a result, the FPolicy server becomes unreachable from the node which causes the FPolicy notifications for file operations on the node to fail. To avoid this issue, verify that the FPolicy server can be reached through at least one LIF on the node to process FPolicy requests for the file operations performed on that node. 
+
+=== Hardware configuration 
+
+You can have the FPolicy server on either a physical server or a virtual server. If the FPolicy server is in a virtual environment, you should allocate dedicated resources (CPU, network, and memory) to the virtual server.  
+
+The cluster node-to-FPolicy server ratio should be optimized to ensure that FPolicy servers are not overloaded, which can introduce latencies when the SVM responds to client requests. The optimal ratio depends on the partner application for which the FPolicy server is being used. NetApp recommends working with partners to determine the appropriate value.  
+
+=== Multiple-policy configuration 
+
+The FPolicy policy for native blocking has the highest priority, irrespective of the sequence number, and decision-altering policies have a higher priority than others. Policy priority depends on the use case. NetApp recommends working with partners to determine the appropriate priority.
+
+=== Size considerations 
+
+FPolicy performs in-line monitoring of SMB and NFS operations, sends notifications to the external server, and waits for a response, depending on the mode of external engine communication (synchronous or asynchronous). This process affects the performance of SMB and NFS access and CPU resources.  
+
+To mitigate any issues, NetApp recommends working with partners to assess and size the environment before enabling FPolicy. Performance is affected by several factors including the number of users, workload characteristics, such as operations per user and data size, network latency, and failure or server slowness. 
+
+== Monitor performance  
+
+FPolicy is a notification-based system. Notifications are sent to an external server for processing and to generate a response back to ONTAP. This round-trip process increases latency for client access. 
+
+Monitoring the performance counters on the FPolicy server and in ONTAP gives you the capability to identify bottlenecks in the solution and to tune the parameters as necessary for an optimal solution. For example, an increase in FPolicy latency has a cascading effect on SMB and NFS access latency. Therefore, you should monitor both workload (SMB and NFS) and FPolicy latency. In addition, you can use quality-of-service policies in ONTAP to set up a workload for each volume or SVM that is enabled for FPolicy.
+
+NetApp recommends running the `statistics show –object workload` command to display workload statistics. In addition, you should monitor the following parameters:
+
+* Average, read, and write latencies
+* Total number of operations
+* Read and write counters 
+
+You can monitor the performance of FPolicy subsystems by using the following FPolicy counters. 
+
+NOTE: You must be in diagnostic mode to collect statistics related to FPolicy. 
+
+.Steps
+. Collect FPolicy counters:
+.. `statistics start -object fpolicy -instance <instance_name> -sample-id <ID>` 
+.. `statistics start -object fpolicy_policy -instance <instance_name> -sample-id <ID>`
+. Display FPolicy counters:
+.. `statistics show -object fpolicy -instance <instance_name> -sample-id <ID>`
+.. `statistics show -object fpolicy_server -instance <instance_name> -sample-id <ID>`
+
++
+--
+The `fpolicy` and `fpolicy_server` counters give you information on several performance parameters which are described in the following table.
+
+[cols=2*,options="header",cols="25,75"]
+|===
+|Counters |Description 
+2+a|*fpolicy counters*
+|aborted_requests
+|Number of screen requests for which processing is aborted on the SVM
+|event_count
+|List of events resulting in notification
+|max_request_latency 	
+|Maximum screen requests latency 
+|outstanding_requests
+|Total number of screen requests in process 
+|processed_requests
+|Total number of screen requests that went through fpolicy processing on the SVM 
+|request_latency_hist
+|Histogram of latency for screen requests 
+|requests_dispatched_rate
+|Number of screen requests dispatched per second 
+|requests_received_rate
+|Number of screen requests received per second 
+2+a|*fpolicy_server counters*
+|max_request_latency
+|Maximum latency for a screen request 
+|outstanding_requests
+|Total number of screen requests waiting for response 
+|request_latency
+|Average latency for screen request 
+|request_latency_hist
+|Histogram of latency for screen requests 
+|request_sent_rate
+|Number of screen requests sent to FPolicy server per second 
+|response_received_rate
+|Number of screen responses received from FPolicy server per second 
+|===
+--
+
+
+Learn more about `statistics start` and `statistics show` in the link:https://docs.netapp.com/us-en/ontap-cli/search.html?q=statistics[ONTAP command reference^].
+
+=== Manage FPolicy workflow and dependency on other technologies 
+
+NetApp recommends disabling an FPolicy policy before making any configuration changes. For example, if you want to add or modify an IP address in the external engine configured for the enabled policy, first disable the policy.  
+
+If you configure FPolicy to monitor NetApp FlexCache volumes, NetApp recommends that you not configure FPolicy to monitor read and getattr file operations. Monitoring these operations in ONTAP requires the retrieval of inode-to-path (I2P) data. Because I2P data cannot be retrieved from FlexCache volumes, it must be retrieved from the origin volume. Therefore, monitoring these operations eliminates the performance benefits that FlexCache can provide.  
+
+When both FPolicy and an off-box antivirus solution are deployed, the antivirus solution receives notifications first. FPolicy processing starts only after antivirus scanning is complete. It is important that you size antivirus solutions correctly because a slow antivirus scanner can affect overall performance. 
+
+== Passthrough-read upgrade and revert considerations
+
+There are certain upgrade and revert considerations that you must know about before upgrading to an ONTAP release that supports passthrough-read or before reverting to a release that does not support passthrough-read.
+
+=== Upgrading
+
+After all nodes are upgraded to a version of ONTAP that supports FPolicy passthrough-read, the cluster is capable of using the passthrough-read functionality; however, passthrough-read is disabled by default on existing FPolicy configurations. To use passthrough-read on existing FPolicy configurations, you must disable the FPolicy policy and modify the configuration, and then reenable the configuration.
+
+=== Reverting
+
+Before reverting to a version of ONTAP that does not support FPolicy passthrough-read, you must meet the following conditions:
+
+* Disable all the policies using passthrough-read, and then modify the affected configurations so that they do not use passthrough-read.
+* Disable FPolicy functionality on the cluster by disabling every FPolicy policy on the cluster.
+
+Before reverting to a version of ONTAP that does not support persistent stores, ensure that none of the FPolicy policies have a configured persistent store. If a persistent store is configured, the revert will fail.
+
+// 2025 Apr 10, ONTAPDOC-2758
+// 2025-02-03,gh-1263

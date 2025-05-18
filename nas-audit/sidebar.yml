@@ -1,0 +1,87 @@
+section: nas-audit
+title:  Audit NAS events on SVMs
+entries:
+- title: Overview
+  url: "/nas-audit/index.html"
+- title: How auditing works
+  entries:
+  - title: Basic auditing concepts
+    url: "/nas-audit/basic-auditing-concept.html"
+  - title: How the ONTAP auditing process works
+    url: "/nas-audit/auditing-process-concept.html"
+- title: Auditing requirements and considerations
+  url: "/nas-audit/requirements-considerations-concept.html"
+- title: Limitations for the size of audit records on staging files
+  url: "/nas-audit/auditing-limitations-size-audit-records-concept.html"
+- title: What the supported audit event log formats are
+  url: "/nas-audit/supported-audit-event-log-formats-concept.html"
+- title: View audit event logs
+  url: "/nas-audit/view-audit-event-logs-concept.html"
+- title: SMB events that can be audited
+  entries:
+  - title: Overview
+    url: "/nas-audit/smb-events-audit-concept.html"
+  - title: Determine what the complete path to the audited object is
+    url: "/nas-audit/determine-complete-path-audited-object-task.html"
+  - title: Considerations when auditing symlinks and hard links
+    url: "/nas-audit/audit-symlinks-hard-links-concept.html"
+  - title: Considerations when auditing alternate NTFS data streams
+    url: "/nas-audit/audit-alternate-ntfs-data-streams-concept.html"
+- title: NFS file and directory access events that can be audited
+  url: "/nas-audit/file-directory-access-events-audited-reference.html"
+- title: Plan the auditing configuration
+  url: "/nas-audit/plan-auditing-config-concept.html"
+- title: Create a file and directory auditing configuration on SVMs
+  entries:
+  - title: Create the auditing configuration
+    url: "/nas-audit/create-auditing-config-task.html"
+  - title: Enable auditing on the SVM
+    url: "/nas-audit/enable-audit-svm-task.html"
+  - title: Verify the auditing configuration
+    url: "/nas-audit/verify-auditing-config-task.html"
+- title: Configure file and folder audit policies
+  entries:
+  - title: Overview
+    url: "/nas-audit/configure-file-folder-audit-policies-concept.html"
+  - title: Configure audit policies on NTFS security-style files and directories
+    url: "/nas-audit/configur-policies-ntfs-security-concept.html"
+  - title: Configure auditing for UNIX security style files and directories
+    url: "/nas-audit/configure-auditing-unix-security-files-directories-task.html"
+- title: Display information about audit policies applied to files and directories
+  entries:
+  - title: Display information about audit policies using the Windows Security tab
+    url: "/nas-audit/display-audit-policies-windows-security-tab-task.html"
+  - title: Display information about NTFS audit policies on FlexVol volumes using the CLI
+    url: "/nas-audit/display-ntfs-audit-policies-flexvol-task.html"
+  - title: Ways to display information about file security and audit policies
+    url: "/nas-audit/wildcards-display-security-policies-concept.html"
+- title: CLI change events that can be audited
+  entries:
+  - title: Overview
+    url: "/nas-audit/cli-change-events-concept.html"
+  - title: Manage file-share event
+    url: "/nas-audit/manage-file-share-event-concept.html"
+  - title: Manage audit-policy-change event
+    url: "/nas-audit/manage-audit-policy-change-event-concept.html"
+  - title: Manage user-account event
+    url: "/nas-audit/manage-user-account-event-concept.html"
+  - title: Manage security-group event
+    url: "/nas-audit/manage-security-group-event-concept.html"
+  - title: Manage authorization-policy-change event
+    url: "/nas-audit/manage-authorization-policy-change-event-concept.html"
+- title: Manage auditing configurations
+  entries:
+  - title: Manually rotate the audit event logs
+    url: "/nas-audit/manual-rotate-audit-event-logs-task.html"
+  - title: Enable and disable auditing on SVMs
+    url: "/nas-audit/enable-disable-auditing-svms-task.html"
+  - title: Display information about auditing configurations
+    url: "/nas-audit/display-audit-config-task.html"
+  - title: Commands for modifying auditing configurations
+    url: "/nas-audit/commands-modify-auditing-config-reference.html"
+  - title: Delete an auditing configuration
+    url: "/nas-audit/delete-audit-config-task.html"
+  - title: Understand cluster revert implications
+    url: "/nas-audit/process-when-reverting-concept.html"
+- title: Troubleshoot auditing and staging volume space issues
+  url: "/nas-audit/troubleshoot-auditing-staging-volume-concept.html"
