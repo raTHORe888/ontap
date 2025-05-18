@@ -1,0 +1,87 @@
+---
+permalink: san-config/fc-target-port-config-recommendations-concept.html
+sidebar: sidebar
+keywords: fc, target, port, configuration, recommendations
+summary: "For best performance and highest availability, you should use the recommended FC target port configuration."
+---
+= Recommended FC target port configuration and speeds for ONTAP systems
+:icons: font
+:imagesdir: ../media/
+
+[.lead]
+FC target ports can be configured and used for the FC-NVMe protocol in the exact same way they are configured and used for the FC protocol. Support for the FC-NVMe protocol varies based upon your platform and your ONTAP version.  Use NetApp Hardware Universe to verify support.
+
+For best performance and highest availability, you should use the recommended target port configuration listed in https://hwu.netapp.com[NetApp Hardware Universe^] for your specific platform.
+
+== Configuration for FC target ports with shared ASICs
+
+The following platforms have port pairs with shared application-specific integrated circuits (ASICs). If you use an expansion adapter with these platforms, you should configure your FC ports so that they do not use the same ASIC for connectivity. 
+
+[cols="3*",options="header"]
+|===
+| Controller| Port pairs with shared ASIC| Number of target ports: Recommended ports
+
+a| 
+* FAS8200
+* AFF A300
+a| 0g+0h
+a| 1: 0g
+2: 0g, 0h
+
+
+a|
+* FAS2720
+* FAS2750
+* AFF A220
+a|
+0c+0d
+0e+0f
+
+a|
+1: 0c
+2: 0c, 0e
+3: 0c, 0e, 0d
+4: 0c, 0e, 0d, 0f
+
+|===
+
+== FC target port supported speeds
+
+FC target ports can be configured to run at different speeds. All target ports used by a given host should be set to the same speed. You should set the target port speed to match the speed of the device to which it connects.  Do  not use autonegotiation for your port speed.  A port that is set to autonegotiation can take longer to reconnect after a takeover/giveback or other interruption.
+
+You can configure onboard ports and expansion adapters to run at the following speeds. Each controller and expansion adapter port can be configured individually for different speeds as needed.
+
+[cols="4*",options="header"]
+|===
+| 4 Gb ports| 8 Gb ports| 16 Gb ports| 32 Gb ports
+a|
+
+* 4 Gb
+* 2 Gb
+* 1 Gb
+
+a|
+
+* 8 Gb
+* 4 Gb
+* 2 Gb
+
+a|
+
+* 16 Gb
+* 8 Gb
+* 4 Gb
+
+a|
+
+* 32 Gb
+* 16 Gb
+* 8 Gb
+
+|===
+
+For a full list of supported adapters and their supported speeds, see the https://hwu.netapp.com[NetApp Hardware Universe^].
+
+// 2025 Apr 30, ONTAPDOC 2986
+// 2024 Dec 04, ONTAPDOC-2579
+// 2023 Dec 06, ONTAPDOC-1007
